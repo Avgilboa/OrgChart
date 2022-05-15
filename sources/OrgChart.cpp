@@ -55,7 +55,9 @@ namespace ariel{
         return temp;
     }
     bool OrgChart::orgChart_Iterator::operator==(OrgChart::orgChart_Iterator other) const{
-        return &(this->_order.at(this->pt_place))==&(other._order.at(other.pt_place));
+        if(this->_version == other._version && this->pt_curr_version == other.pt_curr_version
+        && this->pt_place == other.pt_place){ return true;}
+        return false;
     }
     bool OrgChart::orgChart_Iterator::operator!=(OrgChart::orgChart_Iterator other) const{
         return !(*this==other);
@@ -82,6 +84,7 @@ namespace ariel{
 
 
 
+
     OrgChart::orgChart_Iterator OrgChart::begin() const{
         vector < node*> vec = this->T->BFS();
         orgChart_Iterator it(vec,this->T->get_version(), this->T->get_ptVersion(), 0);
@@ -91,6 +94,42 @@ namespace ariel{
         vector < node*> vec = this->T->BFS();
         orgChart_Iterator it(vec,this->T->get_version(), this->T->get_ptVersion(),vec.size());
         return it;
+    }
+
+    OrgChart::orgChart_Iterator OrgChart::begin_level_order() const{
+        return this->begin();
+    }
+
+    OrgChart::orgChart_Iterator OrgChart::end_level_order() const{
+        return this->end();
+    }
+    OrgChart::orgChart_Iterator OrgChart::begin_reverse_order() const{
+        vector < node*> vec = this->T->BFS();
+        std::reverse(vec.begin(), vec.end());
+        orgChart_Iterator it(vec,this->T->get_version(), this->T->get_ptVersion(),0);
+        return it;
+    }
+    OrgChart::orgChart_Iterator OrgChart::reverse_order() const{
+        vector < node*> vec = this->T->BFS();
+        std::reverse(vec.begin(), vec.end());
+        orgChart_Iterator it(vec,this->T->get_version(), this->T->get_ptVersion(),vec.size());
+        return it;
+    }
+    OrgChart::orgChart_Iterator OrgChart::begin_preorder() const{
+        vector < node*> vec = this->T->BFS();
+        orgChart_Iterator it(vec,this->T->get_version(), this->T->get_ptVersion(),0);
+        return it;
+    }
+    OrgChart::orgChart_Iterator OrgChart::end_preorder() const{
+        vector < node*> vec = this->T->BFS();
+        orgChart_Iterator it(vec,this->T->get_version(), this->T->get_ptVersion(),vec.size());
+        return it;
+    }
+
+
+    std::ostream& operator <<(std::ostream& os, OrgChart& other){
+        os<< "this is a functuin!";
+        return os;
     }
 
 

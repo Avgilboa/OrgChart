@@ -38,7 +38,7 @@ public:
 
     orgChart_Iterator begin() const;
     orgChart_Iterator end() const;
-    friend std::ostream& operator << (std::ostream & oStream, OrgChart & Tree);
+    friend std::ostream& operator << (std::ostream & oStream, OrgChart & other);
     Tree* get_Tree()const {return this->T;}
 
     OrgChart();
