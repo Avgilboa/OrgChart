@@ -1,47 +1,75 @@
-#include "Tree.hpp"
-namespace ariel{
-class OrgChart
-{
-    class orgChart_Iterator{
-        private:
-            std::vector<node*> _order;
-            size_t _version;
-            const size_t * pt_curr_version;
-            size_t pt_place;
-        public:
 
-            OrgChart::orgChart_Iterator operator++();
-            OrgChart::orgChart_Iterator operator++(int);
-            OrgChart::orgChart_Iterator operator--();
-            OrgChart::orgChart_Iterator operator--(int);
-            bool operator==(OrgChart::orgChart_Iterator other) const;
-            bool operator!=(OrgChart::orgChart_Iterator other) const;
-            node& operator*() const;
-            node* operator->() const;
-            orgChart_Iterator(std::vector<node*> order, size_t version,size_t * pTree_version, size_t ptmemory);
-            //~orgChart_Iterator();
+#include "OrgIter.hpp"
 
-            bool check_valid() const; // has no change on the tree, ther same level and version
+
+namespace ariel {
+
+    class OrgChart {
+    private:
+        Node *_root;
+        Node *curr_iter;
+        void del_nodes();
+        void exist_root();
+
+        void updateNodesForLevelOrder();
+
+        void updateNodesForReverseLevelOrder();
+
+        void updateNodesForPreorder();
+
+    public:
+        OrgChart();
+        OrgChart(OrgChart &other);
+
+        OrgChart(OrgChart &&other) = default;
+
+        OrgChart &operator=(OrgChart &&) = default;
+
+        OrgChart &operator=(const OrgChart &other) = default;
+
+        ~OrgChart();
+
+        OrgChart &add_sub(const std::string& __parent, const std::string& __child);
+
+        OrgChart &add_root(const std::string& name);
+
+        Node *
+        getSuperior(const std::string &superiorName);
+
+        Node *getHead();
+
+
+        /**
+         * iteration functions
+         */
+        // general OrgChart begin and end
+        OrgIter begin();
+
+        OrgIter end();
+
+        // level order begin and end
+       OrgIter begin_level_order();
+
+        OrgIter end_level_order();
+
+        // reverse level order begin and end
+        OrgIter begin_reverse_order();
+
+        OrgIter reverse_order();
+
+        // preorder begin and end
+        OrgIter begin_preorder();
+
+        OrgIter end_preorder();
+
+        friend std::ostream &operator<<(std::ostream &output, const OrgChart &chart);
+
     };
-private:
-    Tree* T;
-public:
-    OrgChart& add_root(const std::string name);
-    OrgChart& add_sub(const std::string parent,const std::string child_new);
 
-    orgChart_Iterator begin_level_order() const;
-    orgChart_Iterator end_level_order() const;
-    orgChart_Iterator begin_reverse_order() const;
-    orgChart_Iterator reverse_order() const;
-    orgChart_Iterator begin_preorder() const;
-    orgChart_Iterator end_preorder() const;
+    /**
+     * validation functions.
+     */
+    void check_name(const std::string &name);
 
-    orgChart_Iterator begin() const;
-    orgChart_Iterator end() const;
-    friend std::ostream& operator << (std::ostream & oStream, OrgChart & other);
-    Tree* get_Tree()const {return this->T;}
 
-    OrgChart();
-    ~OrgChart();
-};
 }
